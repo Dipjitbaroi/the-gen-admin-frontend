@@ -1,24 +1,22 @@
-import React, { useState } from "react";
-import AllTransactionsTable from "./AllTransactionsTable";
-import SubscriptionTransactionsTable from "./SubscriptionTransactionsTable";
-import SessionTransactionsTable from "./SessionTransactionsTable";
-import PayoutTransactionsTable from "./PayoutTransactionsTable";
+import { useState } from "react";
 
-const TransactionTabs = () => {
+import AllNotificationTable from "./NotificationTable";
+
+const NotificationTabs = () => {
   const [activeTab, setActiveTab] = useState("All");
 
   const renderActiveTab = () => {
     switch (activeTab) {
       case "All":
-        return <AllTransactionsTable />;
+        return <AllNotificationTable />;
       case "Subscription":
-        return <SubscriptionTransactionsTable />;
+        return;
       case "Session":
-        return <SessionTransactionsTable />;
+        return;
       case "Payout":
-        return <PayoutTransactionsTable />;
+        return;
       default:
-        return <AllTransactionsTable />;
+        return;
     }
   };
 
@@ -43,8 +41,9 @@ const TransactionTabs = () => {
 
       {/* Active Tab Content */}
       {renderActiveTab()}
+      
     </div>
   );
 };
 
-export default TransactionTabs;
+export default NotificationTabs;

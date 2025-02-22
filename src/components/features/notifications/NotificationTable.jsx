@@ -1,4 +1,4 @@
-import React from "react";
+
 import {
   Table,
   TableBody,
@@ -10,21 +10,11 @@ import {
   Button,
 } from "@mui/material";
 
-const NotificationTable = () => {
+const AllNotificationTable = () => {
   const rows = [
-    { id: "#001", title: "System Update", status: "Sent", date: "2023-01-01" },
-    {
-      id: "#002",
-      title: "Maintenance Alert",
-      status: "Pending",
-      date: "2023-01-02",
-    },
-    {
-      id: "#003",
-      title: "Promotion Offer",
-      status: "Draft",
-      date: "2023-01-03",
-    },
+    { campaign: "New Pros", content: "sjhsdjahkgjh", audience: "Everyone", type: "In-App", created_on: "2023-01-01", created_by: "Vicente Lonzono", published_on: "2023-01-01" },
+    { campaign: "New Pros", content: "angsrhe", audience: "Everyone", type: "In-App", created_on: "2023-01-01", created_by: "Vicente Lonzono", published_on: "2023-01-01" },
+    { campaign: "New Pros", content: "jkhactyauyl", audience: "Everyone", type: "In-App", created_on: "2023-01-01", created_by: "Vicente Lonzono", published_on: "2023-01-01" },
   ];
 
   return (
@@ -32,20 +22,42 @@ const NotificationTable = () => {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>Title</TableCell>
-            <TableCell>Status</TableCell>
-            <TableCell>Date</TableCell>
-            <TableCell>Actions</TableCell>
+          <TableCell>
+              <p className="font-semibold">Campaign</p>
+            </TableCell>
+            <TableCell>
+              <p className="font-semibold">Content</p>
+            </TableCell>
+            <TableCell>
+              <p className="font-semibold">Audience</p>
+            </TableCell>
+            <TableCell>
+              <p className="font-semibold">Type</p>
+            </TableCell>
+            <TableCell>
+              <p className="font-semibold">Created On</p>
+            </TableCell>
+            <TableCell>
+              <p className="font-semibold">Published On</p>
+            </TableCell>
+            <TableCell>
+              <p className="font-semibold">Created By</p>
+            </TableCell>
+            <TableCell>
+              <p className="font-semibold">Action</p>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row, index) => (
             <TableRow key={index}>
-              <TableCell>{row.id}</TableCell>
-              <TableCell>{row.title}</TableCell>
-              <TableCell>{row.status}</TableCell>
-              <TableCell>{row.date}</TableCell>
+              <TableCell>{row.campaign}</TableCell>
+              <TableCell>{row.content}</TableCell>
+              <TableCell>{row.audience}</TableCell>
+              <TableCell>{row.type}</TableCell>
+              <TableCell>{row.created_on}</TableCell>
+              <TableCell>{row.published_on}</TableCell>
+              <TableCell>{row.created_by}</TableCell>
               <TableCell>
                 <Button
                   variant="outlined"
@@ -72,4 +84,4 @@ const NotificationTable = () => {
   );
 };
 
-export default NotificationTable;
+export default AllNotificationTable;
