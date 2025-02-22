@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -13,18 +13,43 @@ import TransactionModal from "./TransactionModal";
 
 const AllTransactionsTable = () => {
   const [openModal, setOpenModal] = useState(false);
-
   const rows = [
-    { id: "001", type: "Subscription", amount: "$100", date: "2023-01-01" },
-    { id: "002", type: "Session", amount: "$50", date: "2023-01-02" },
-    { id: "003", type: "Payout", amount: "$200", date: "2023-01-03" },
+    {
+      id: "001",
+      type: "Subscription",
+      amount: "$100",
+      date: "2023-01-01",
+      user: "xdy",
+      method: "cash",
+    },
+    {
+      id: "002",
+      type: "Session",
+      amount: "$50",
+      date: "2023-01-02",
+      user: "ydx",
+      method: "card",
+    },
+    {
+      id: "003",
+      type: "Payout",
+      amount: "$200",
+      date: "2023-01-03",
+      user: "xyz",
+      method: "bank transfer",
+    },
   ];
 
   const cols = [
-    { id: "1", name: "Transaction ID" },
-    { id: "2", name: "Type" },
-    { id: "3", name: "User" },
+    { id: "1", label: "Transaction ID", name: "id" },
+    { id: "2", label: "Type", name: "type" },
+    { id: "3", label: "User", name: "user" },
+    { id: "4", label: "Date & Time", name: "date" },
+    { id: "5", label: "Amount", name: "amount" },
+    { id: "6", label: "Method", name: "method" },
   ];
+  
+
   return (
     <div>
       <TableContainer component={Paper} className="shadow-lg">
@@ -33,41 +58,19 @@ const AllTransactionsTable = () => {
             <TableRow>
               {cols.map((col) => (
                 <TableCell key={col.id}>
-                  <p className="font-semibold">{col.name}</p>
+                  <p className="font-semibold">{col.label}</p>
                 </TableCell>
               ))}
-              <TableCell>
-                <p className="font-semibold">Transaction ID</p>
-              </TableCell>
-              <TableCell>
-                <p className="font-semibold">Type</p>
-              </TableCell>
-              <TableCell>
-                <p className="font-semibold">User</p>
-              </TableCell>
-              <TableCell>
-                <p className="font-semibold">Date & Time</p>
-              </TableCell>
-              <TableCell>
-                <p className="font-semibold">Amount</p>
-              </TableCell>
-              <TableCell>
-                <p className="font-semibold">Method</p>
-              </TableCell>
-              <TableCell>
-                <p className="font-semibold">Actions</p>
-              </TableCell>
+              <TableCell><p className="font-semibold">Action</p></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row, index) => (
               <TableRow key={index}>
-                <TableCell>{row.id}</TableCell>
-                <TableCell>{row.type}</TableCell>
-                <TableCell>{row.user}</TableCell>
-                <TableCell>{row.date}</TableCell>
-                <TableCell>{row.amount}</TableCell>
-                <TableCell>{row.method}</TableCell>
+                {cols.map((col) => (
+                  <TableCell key={col.id}>{row[col.name]}</TableCell>
+                ))}
+
                 <TableCell>
                   <Button
                     variant="contained"
@@ -82,7 +85,6 @@ const AllTransactionsTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
-
       {/* Modal */}
       <TransactionModal open={openModal} onClose={() => setOpenModal(false)} />
     </div>
