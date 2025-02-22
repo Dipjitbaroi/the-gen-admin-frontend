@@ -9,6 +9,7 @@ import SupportRequests from "./pages/SupportRequests.jsx";
 import Transactions from "./pages/Transactions.jsx";
 import UserManagement from "./pages/UserManagement.jsx";
 import RoleManagement from "./pages/RoleManagement.jsx";
+import LoginPage from "./pages/Login.jsx";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
       <Routes >
           <Route element={<DashboardLayout />} >
               <Route index element={<Navigate replace to={"dashboard"} />} />
+              <Route path="/login" element={<LoginPage />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/sessions" element={<Sessions />} />
