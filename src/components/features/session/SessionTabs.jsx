@@ -22,7 +22,7 @@ const SessionTabs = () => {
   return (
     <div className="bg-white rounded-lg border border-gray-300">
       {/* Tabs */}
-      <div className="flex border-b border-gray-300">
+      <div className="flex border-b border-gray-300 w-full">
         {["All", "Upcoming", "Completed"].map((tab) => (
           <button
             key={tab}

@@ -16,7 +16,7 @@ const NotificationTabs = () => {
       case "Payout":
         return;
       default:
-        return;
+        return <AllNotificationTable />;
     }
   };
 
