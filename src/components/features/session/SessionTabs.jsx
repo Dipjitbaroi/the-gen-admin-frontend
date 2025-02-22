@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import AllSessionsTable from "./AllSessionsTable";
 import UpcomingSessionsTable from "./UpcomingSessions";
 import CompletedSessionsTable from "./CompletedSessionsTable";
@@ -20,14 +20,14 @@ const SessionTabs = () => {
   };
 
   return (
-    <div>
+    <div className="bg-white rounded-lg border border-gray-300">
       {/* Tabs */}
-      <div className="flex border-b border-gray-300 mb-4">
+      <div className="flex border-b border-gray-300">
         {["All", "Upcoming", "Completed"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-6 py-2 text-sm font-medium ${
+            className={`flex px-6 py-4 text-sm font-medium w-full justify-center h-full${
               activeTab === tab
                 ? "border-b-2 border-purple-600 text-purple-600"
                 : "text-gray-600"

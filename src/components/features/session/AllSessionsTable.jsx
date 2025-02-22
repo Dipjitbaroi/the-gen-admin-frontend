@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import {
   Table,
   TableBody,
@@ -16,16 +16,20 @@ const AllSessionsTable = () => {
 
   const rows = [
     {
-      topic: "React Basics",
-      date: "2023-01-01",
+      session_with: "Haylie George",
+      date: "01/01/2023",
       time: "10:00 AM",
       status: "Completed",
+      duration: "10 Minutes",
+      booked_by: "Ahmad Bergson",
     },
     {
-      topic: "Tailwind CSS",
-      date: "2023-01-02",
+      session_with: "Haylie George",
+      date: "01/02/2023",
       time: "2:00 PM",
       status: "Upcoming",
+      duration: "15 Minutes",
+      booked_by: "Leo Passaquindici Arcand",
     },
   ];
 
@@ -35,20 +39,38 @@ const AllSessionsTable = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Topic</TableCell>
-              <TableCell>Date</TableCell>
-              <TableCell>Time</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>
+                <p className="font-semibold">Date</p>
+              </TableCell>
+              <TableCell>
+                <p className="font-semibold">Time</p>
+              </TableCell>
+              <TableCell>
+                <p className="font-semibold">Session With</p>
+              </TableCell>
+              <TableCell>
+                <p className="font-semibold">Duration</p>
+              </TableCell>
+              <TableCell>
+                <p className="font-semibold">Status</p>
+              </TableCell>
+              <TableCell>
+                <p className="font-semibold">Booked By</p>
+              </TableCell>
+              <TableCell>
+                <p className="font-semibold">Action</p>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {rows.map((row, index) => (
               <TableRow key={index}>
-                <TableCell>{row.topic}</TableCell>
                 <TableCell>{row.date}</TableCell>
                 <TableCell>{row.time}</TableCell>
+                <TableCell>{row.session_with}</TableCell>
+                <TableCell>{row.duration}</TableCell>
                 <TableCell>{row.status}</TableCell>
+                <TableCell>{row.booked_by}</TableCell>
                 <TableCell>
                   <Button
                     variant="contained"
