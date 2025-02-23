@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import AllTransactionsTable from "./AllTransactionsTable";
 import SubscriptionTransactionsTable from "./SubscriptionTransactionsTable";
 import SessionTransactionsTable from "./SessionTransactionsTable";

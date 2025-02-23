@@ -1,18 +1,11 @@
 import { useState } from "react";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-} from "@mui/material";
 import TransactionModal from "./TransactionModal";
+import GeneralTable from "../../layout/Table/GeneralTable";
 
-const AllTransactionsTable = () => {
+const AllTransactions = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
+
   const rows = [
     {
       id: "001",
@@ -39,56 +32,37 @@ const AllTransactionsTable = () => {
       method: "bank transfer",
     },
   ];
-
-  const cols = [
-    { id: "1", label: "Transaction ID", name: "id" },
-    { id: "2", label: "Type", name: "type" },
-    { id: "3", label: "User", name: "user" },
-    { id: "4", label: "Date & Time", name: "date" },
-    { id: "5", label: "Amount", name: "amount" },
-    { id: "6", label: "Method", name: "method" },
+  const columns = [
+    { id: "id", label: "Transaction ID" },
+    { id: "type", label: "Type" },
+    { id: "user", label: "User" },
+    { id: "date", label: "Date & Time" },
+    { id: "amount", label: "Amount" },
+    { id: "method", label: "Method" },
   ];
-  
+
+  const handleOpenModal = (transaction) => {
+    setSelectedTransaction(transaction);
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+    setSelectedTransaction(null);
+  };
 
   return (
     <div>
-      <TableContainer component={Paper} className="shadow-lg">
-        <Table>
-          <TableHead>
-            <TableRow>
-              {cols.map((col) => (
-                <TableCell key={col.id}>
-                  <p className="font-semibold">{col.label}</p>
-                </TableCell>
-              ))}
-              <TableCell><p className="font-semibold">Action</p></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row, index) => (
-              <TableRow key={index}>
-                {cols.map((col) => (
-                  <TableCell key={col.id}>{row[col.name]}</TableCell>
-                ))}
-
-                <TableCell>
-                  <Button
-                    variant="contained"
-                    size="small"
-                    onClick={() => setOpenModal(true)}
-                  >
-                    View
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {/* Modal */}
-      <TransactionModal open={openModal} onClose={() => setOpenModal(false)} />
+      <GeneralTable columns={columns} data={rows} openModal={handleOpenModal} />
+      {selectedTransaction && (
+        <TransactionModal
+          open={openModal}
+          onClose={handleCloseModal}
+          transaction={selectedTransaction}
+        />
+      )}
     </div>
   );
 };
 
-export default AllTransactionsTable;
+export default AllTransactions;

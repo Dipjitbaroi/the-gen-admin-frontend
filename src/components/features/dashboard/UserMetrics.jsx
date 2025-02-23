@@ -1,4 +1,3 @@
-import React from "react";
 import { Line } from "react-chartjs-2";
 import {
     Chart as ChartJS,
@@ -46,6 +45,7 @@ const UserMetrics = () => {
 
     return (
         <div className="p-6 bg-white rounded-lg shadow-lg">
+            <div>Number Of Users</div>
             <h2 className="text-lg font-semibold text-gray-800 mb-4">User Metrics</h2>
             <Line data={data} options={options} />
         </div>
