@@ -1,66 +1,48 @@
 import { useState } from "react";
-import TransactionModal from "./TransactionModal";
 import GeneralTable from "../../layout/Table/GeneralTable";
+import { useGetTransactionsQuery } from "../../../services/apiConfig";
+import PaginationLayout from "../../layout/Pagination/pagination";
 
 const AllTransactions = () => {
-  const [openModal, setOpenModal] = useState(false);
-  const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [page, setPage] = useState(1);
+  const limit = 10; // Number of items per page
 
-  const rows = [
-    {
-      id: "001",
-      type: "Subscription",
-      amount: "$100",
-      date: "2023-01-01",
-      user: "xdy",
-      method: "cash",
-    },
-    {
-      id: "002",
-      type: "Session",
-      amount: "$50",
-      date: "2023-01-02",
-      user: "ydx",
-      method: "card",
-    },
-    {
-      id: "003",
-      type: "Payout",
-      amount: "$200",
-      date: "2023-01-03",
-      user: "xyz",
-      method: "bank transfer",
-    },
-  ];
+  const { data, error, isLoading } = useGetTransactionsQuery({ page, limit });
+
+  console.log("Fetched Data:", data);
+  console.log("Error:", error);
+
+  // Ensure data is safely handled
+  const resData = data?.data || [];
+  const totalPages = data?.pagination?.totalPages || 1; // Ensure totalPages exists
+  const totalItems = data?.pagination?.total || 0; // Ensure totalItems exists
+
   const columns = [
-    { id: "id", label: "Transaction ID" },
+    { id: "_id", label: "Transaction ID" },
     { id: "type", label: "Type" },
     { id: "user", label: "User" },
-    { id: "date", label: "Date & Time" },
+    { id: "completed_at", label: "Date & Time" },
     { id: "amount", label: "Amount" },
     { id: "method", label: "Method" },
   ];
 
-  const handleOpenModal = (transaction) => {
-    setSelectedTransaction(transaction);
-    setOpenModal(true);
-  };
+  if (isLoading) return <p>Loading transactions...</p>;
+  if (error) return <p>Error fetching transactions</p>;
 
-  const handleCloseModal = () => {
-    setOpenModal(false);
-    setSelectedTransaction(null);
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
   };
 
   return (
     <div>
-      <GeneralTable columns={columns} data={rows} openModal={handleOpenModal} />
-      {selectedTransaction && (
-        <TransactionModal
-          open={openModal}
-          onClose={handleCloseModal}
-          transaction={selectedTransaction}
-        />
-      )}
+      <GeneralTable columns={columns} data={resData} />
+      <PaginationLayout
+        totalPages={totalPages}
+        page={page}
+        onChangePage={handleChangePage}
+        totalItems={totalItems}
+        itemsPerPage={limit}
+      />
     </div>
   );
 };

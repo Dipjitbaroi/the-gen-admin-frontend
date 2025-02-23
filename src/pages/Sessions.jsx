@@ -1,6 +1,5 @@
 import React from "react";
 import SessionTabs from "../components/features/session/SessionTabs.jsx";
-import PaginationLayout from "../components/layout/Pagination/pagination.jsx";
 import SearchBar from "../components/layout/Searchbar/Searchbar.jsx";
 
 const Sessions = () => {
@@ -19,8 +18,6 @@ const Sessions = () => {
 
       {/* Tabs Section */}
       <SessionTabs />
-
-      <PaginationLayout />
     </div>
   );
 };

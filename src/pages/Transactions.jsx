@@ -1,22 +1,13 @@
 import TransactionTabs from "../components/features/transactions/TransactionTabs.jsx";
-import PaginationLayout from "../components/layout/Pagination/pagination.jsx";
+// import PaginationLayout from "../components/layout/Pagination/pagination.jsx";
 import SearchBar from "../components/layout/Searchbar/Searchbar.jsx";
-import {
-  useCreatePostMutation,
-  useGetPostQuery,
-} from "../services/apiConfig.js";
+// import {
+//   useCreatePostMutation,
+//   useGetPostQuery,
+// } from "../services/apiConfig.js";
 
 const Transactions = () => {
-  const { data } = useGetPostQuery();
-  const [createPost, {isLoading}] = useCreatePostMutation();
-  const handleCreatePost = async ()=> {
-    try{
-      const res = await createPost()
-    }catch{
-
-    }
-  }
-  console.log(data);
+  // console.log(data);
   return (
     <div className="p-8">
       {/* Header */}
@@ -32,7 +23,12 @@ const Transactions = () => {
 
       {/* Tabs Section */}
       <TransactionTabs />
-      <PaginationLayout />
+      {/* <PaginationLayout
+        totalPages={totalPages}
+        page={currentPage}
+        totalItems={totalItems}
+        itemsPerPage={rowsPerPage}
+      /> */}
     </div>
   );
 };

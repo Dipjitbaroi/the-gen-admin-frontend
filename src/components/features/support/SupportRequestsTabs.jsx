@@ -1,29 +1,29 @@
 import { useState } from "react";
-import { useGetSessionsQuery } from "../../../services/apiConfig";
-import PaginationLayout from "../../layout/Pagination/pagination";
 import GeneralTable from "../../layout/Table/GeneralTable";
+import PaginationLayout from "../../layout/Pagination/pagination";
+import { useGetSupportsQuery } from "../../../services/apiConfig";
 
-const SessionTabs = () => {
+const SupportRequestsTabs = () => {
   const [activeTab, setActiveTab] = useState("All");
   const [page, setPage] = useState(1);
   const limit = 10; // Number of items per page
 
-  let type = "";
+  let status = "";
   switch (activeTab) {
-    case "Upcoming":
-      type = "subs";
+    case "Open":
+      status = "admin";
       break;
-    case "Completed":
-      type = "session";
+    case "Closed":
+      status = "admin";
       break;
     default:
-      type = "";
+      status = "";
   }
 
-  const { data, error, isLoading } = useGetSessionsQuery({
+  const { data, error, isLoading } = useGetSupportsQuery({
     page,
     limit,
-    type,
+    status,
   });
 
   console.log("Fetched Data:", data);
@@ -35,12 +35,11 @@ const SessionTabs = () => {
   const totalItems = data?.pagination?.total || 0; // Ensure totalItems exists
 
   const columns = [
-    { id: "date", label: "Date" },
-    { id: "time", label: "Time" },
-    { id: "sessionWith", label: "Session With" },
-    { id: "duration", label: "Duration" },
+    { id: "_id", label: "Report ID" },
+    { id: "type", label: "Report Type" },
+    { id: "reported_by", label: "Reported By" },
     { id: "status", label: "Status" },
-    { id: "bookedBy", label: "Booked By" },
+    { id: "reported_at", label: "Reported On" },
   ];
 
   if (isLoading) return <p>Loading transactions...</p>;
@@ -49,32 +48,27 @@ const SessionTabs = () => {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
   return (
     <div>
       <div className="bg-white rounded-lg border border-gray-300">
-        {/* Tabs */}
         <div className="flex border-b border-gray-300 w-full">
-          {["All", "Upcoming", "Completed"].map((tab) => (
+          {["All", "Open", "Closed"].map((tab) => (
             <button
               key={tab}
               onClick={() => {
                 setActiveTab(tab);
                 setPage(1); // Reset to first page when switching tabs
               }}
-              className={`flex px-6 py-4 text-sm font-medium w-full justify-center h-full${
+              className={`flex px-6 py-4 text-sm font-medium w-full justify-center h-full ${
                 activeTab === tab
                   ? "border-b-2 border-purple-600 text-purple-600"
                   : "text-gray-600"
               }`}
             >
-              {tab} Sessions
+              {tab}
             </button>
           ))}
         </div>
-
-        {/* Active Tab Content */}
-        {/* {renderActiveTab()} */}
         <GeneralTable columns={columns} data={resData} />
       </div>
       <PaginationLayout
@@ -88,4 +82,4 @@ const SessionTabs = () => {
   );
 };
 
-export default SessionTabs;
+export default SupportRequestsTabs;
