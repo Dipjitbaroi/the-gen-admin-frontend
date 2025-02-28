@@ -1,14 +1,6 @@
 import React from "react";
-import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-} from "@mui/material";
+import SearchBar from "../components/layout/Searchbar/Searchbar";
+import UserManagementTabs from "../components/features/user/UserManagementTabs";
 
 const UserManagement = () => {
   const users = [
@@ -28,39 +20,15 @@ const UserManagement = () => {
   ];
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-semibold mb-4">User Management</h1>
-      <div className="bg-white p-4 rounded-lg shadow-md">
-        <TableContainer component={Paper}>
-          <Table>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Role</TableCell>
-                <TableCell>Actions</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {users.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>{user.role}</TableCell>
-                  <TableCell>
-                    <Button variant="outlined" color="primary" className="mr-2">
-                      Edit
-                    </Button>
-                    <Button variant="outlined" color="error">
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
+    <div className="">
+      {/* Header */}
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-4xl font-bold text-gray-800 mb-6">User Management</h1>
+        <SearchBar />
       </div>
+
+      {/* Tabs Section */}
+      <UserManagementTabs />
     </div>
   );
 };

@@ -1,13 +1,31 @@
-import React from "react";
-import logo from "../assets/logo.png"; // Make sure to import your logo image
+import React, { useState } from "react";
+import logo from "../assets/logo.png";
 import CustomCheckbox from "../components/layout/Checkbox/checkbox";
+import { useLoginMutation } from "../services/apiConfig";
 
 const LoginPage = () => {
-    const [isChecked1, setIsChecked1] = React.useState(false);
+  const [isChecked1, setIsChecked1] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
+  const [login, { isLoading }] = useLoginMutation();
+
+  const handleCreatePost = async () => {
+    try {
+      const res = await login({ email, password });
+      if (res?.data?.accessToken) {
+        localStorage.setItem('token', res.data.accessToken);
+        console.log('Login successful:', res);
+      }
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
+  };
+  
   const handleCheckboxChange1 = (event) => {
     setIsChecked1(event.target.checked);
   };
+
   return (
     <div className="flex flex-col items-center min-h-screen bg-white">
       <div className="flex items-center justify-center w-full py-20 bg-gradient-to-r from-[#EDAAA5] to-[#CEA5ED]">
@@ -27,17 +45,17 @@ const LoginPage = () => {
             className="mb-4 w-full p-4 border rounded-xl bg-[#F5F5F5] focus:outline-none focus:ring-2 focus:ring-purple-600"
             type="email"
             placeholder="Enter email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             className="mb-8 w-full p-4 border rounded-xl bg-[#F5F5F5] focus:outline-none focus:ring-2 focus:ring-purple-600"
             type="password"
             placeholder="Enter Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <div className="flex items-center mb-8 w-full">
-            {/* <input type="checkbox" id="remember" className="mr-2" />
-            <label htmlFor="remember" className="">
-              Remember me
-            </label> */}
             <CustomCheckbox
               label="Remember me"
               checked={isChecked1}
@@ -50,8 +68,12 @@ const LoginPage = () => {
           >
             Forgot Password?
           </a>
-          <button className="w-full py-4 bg-[#8734A3] text-white rounded-lg hover:bg-purple-700 font-semibold">
-            Login
+          <button
+            className="w-full py-4 bg-[#8734A3] text-white rounded-lg hover:bg-purple-700 font-semibold"
+            onClick={handleCreatePost}
+            disabled={isLoading}
+          >
+            {isLoading ? "Logging in..." : "Login"}
           </button>
         </div>
       </div>

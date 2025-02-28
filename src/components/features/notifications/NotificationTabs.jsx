@@ -9,11 +9,9 @@ const NotificationTabs = () => {
     switch (activeTab) {
       case "All":
         return <AllNotificationTable />;
-      case "Subscription":
+      case "In-App":
         return;
-      case "Session":
-        return;
-      case "Payout":
+      case "Push":
         return;
       default:
         return <AllNotificationTable />;
@@ -24,7 +22,7 @@ const NotificationTabs = () => {
     <div className="bg-white rounded-lg border border-gray-300">
       {/* Tabs */}
       <div className="flex border-b border-gray-300 w-full ">
-        {["All", "Subscription", "Session", "Payout"].map((tab) => (
+        {["All", "In-App", "Push"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -34,7 +32,7 @@ const NotificationTabs = () => {
                 : "text-gray-600"
             }`}
           >
-            {tab} Transactions
+            {tab}
           </button>
         ))}
       </div>

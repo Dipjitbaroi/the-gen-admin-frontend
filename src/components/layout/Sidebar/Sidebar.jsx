@@ -76,7 +76,7 @@ const Sidebar = () => {
   const [isPeopleDropdownOpen, setIsPeopleDropdownOpen] = useState(false);
 
   return (
-    <div className="w-64 bg-white shadow-lg min-h-full">
+    <div className="w-1/6 bg-white shadow-lg min-h-full">
       <div className="p-4">
         <img src="/images/logo/logo.png" className="h-12" alt="GEN" />
       </div>
@@ -91,7 +91,7 @@ const Sidebar = () => {
                     link.children.some(
                       (child) => location.pathname === child.path
                     )
-                      ? "bg-purple-50 text-purple-700"
+                      ? "bg-purple-50 text-purple-700 border-l-4 border-purple-700"
                       : ""
                   }`}
                 >
@@ -136,7 +136,9 @@ const Sidebar = () => {
               to={link.path}
               className={({ isActive }) =>
                 `flex items-center font-semibold px-6 py-3 text-gray-700 hover:text-purple-700 hover:bg-purple-50 ${
-                  isActive ? "text-purple-700 bg-purple-50" : ""
+                  isActive
+                    ? "text-purple-700 bg-purple-50 border-l-4 border-purple-700"
+                    : ""
                 }`
               }
             >

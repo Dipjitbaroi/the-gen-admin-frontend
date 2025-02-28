@@ -19,22 +19,22 @@ const Analytics = () => {
       case "leaderboard":
         return <LeaderboardTab />;
       default:
-        return <OverviewTab />;
+        return <UsersTab />;
     }
   };
 
   return (
-    <div className="p-8">
+    <div className="">
       {/* Header */}
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Analytics</h1>
+      <h1 className="text-4xl font-bold text-gray-800 mb-6">Analytics</h1>
 
       {/* Tabs */}
-      <div className="flex space-x-4 mb-8 border-b border-gray-200">
+      <div className="flex space-x-4 mb-8 border border-gray-200 bg-white rounded-lg w-full shadow-md">
         {["overview", "users", "revenue", "leaderboard"].map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`py-2 px-4 ${
+            className={`flex px-6 py-4 text-sm font-medium w-full justify-center h-full ${
               activeTab === tab
                 ? "border-b-2 border-purple-600 text-purple-600 font-semibold"
                 : "text-gray-600"
