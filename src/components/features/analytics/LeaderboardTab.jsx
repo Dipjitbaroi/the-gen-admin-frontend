@@ -18,8 +18,8 @@ const LeaderboardTab = () => {
   ];
 
   const renderTable = (title, data) => (
-    <div className="w-full lg:w-1/2 p-4">
-      <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="w-full">
+      <div className="bg-white rounded-lg shadow-md p-6 w-full">
         <div className="flex justify-between items-center mb-4">
           <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
           <select className="border rounded-md px-3 py-1 text-gray-600">
@@ -56,9 +56,9 @@ const LeaderboardTab = () => {
   );
 
   return (
-    <div className="flex flex-wrap">
-      {renderTable("Top Pros", topPros)}
-      {renderTable("Top Peers", topPeers)}
+    <div className="flex w-full">
+      <div className="mr-2 w-full">{renderTable("Top Pros", topPros)}</div>
+      <div className="ml-2 w-full">{renderTable("Top Peers", topPeers)}</div>
     </div>
   );
 };

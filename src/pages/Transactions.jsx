@@ -9,10 +9,10 @@ import SearchBar from "../components/layout/Searchbar/Searchbar.jsx";
 const Transactions = () => {
   // console.log(data);
   return (
-    <div className="p-8">
+    <div className="">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">Transactions</h1>
+        <h1 className="text-4xl font-bold text-gray-800 mb-6">Transactions</h1>
         {/* <input
           type="text"
           placeholder="Search..."

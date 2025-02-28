@@ -20,10 +20,10 @@ const SupportRequests = () => {
   ];
 
   return (
-    <div className="p-8">
+    <div className="">
       {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-800">User Management</h1>
+        <h1 className="text-4xl font-bold text-gray-800 mb-6">User Management</h1>
         <SearchBar />
       </div>
 

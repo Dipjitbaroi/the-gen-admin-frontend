@@ -43,7 +43,7 @@ const TransactionTabs = () => {
     { id: "user", label: "User" },
     { id: "completed_at", label: "Date & Time" },
     { id: "amount", label: "Amount" },
-    { id: "method", label: "Method" },
+    { id: "payment_method", label: "Method" },
   ];
 
   if (isLoading) return <p>Loading transactions...</p>;

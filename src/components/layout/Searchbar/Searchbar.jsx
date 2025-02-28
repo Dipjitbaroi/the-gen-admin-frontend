@@ -4,7 +4,7 @@ import { Search as SearchIcon, Tune as TuneIcon, List as ListIcon } from '@mui/i
 
 const SearchBar = () => {
   return (
-    <div className="flex items-center rounded-full border border-gray-300 p-2 bg-white">
+    <div className="flex items-center rounded-xl border border-gray-300 p-2 bg-white h-full">
       <TextField
         placeholder="Search"
         variant="standard"
@@ -12,7 +12,7 @@ const SearchBar = () => {
           disableUnderline: true,
           startAdornment: (
             <InputAdornment position="start">
-              <SearchIcon />
+              <SearchIcon color="black"/>
             </InputAdornment>
           ),
         }}
