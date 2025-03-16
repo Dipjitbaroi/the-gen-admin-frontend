@@ -28,7 +28,7 @@ const NotificationTabs = () => {
             onClick={() => setActiveTab(tab)}
             className={`flex px-6 py-4 text-sm font-medium w-full justify-center h-full ${
               activeTab === tab
-                ? " border-b-2 border-purple-600 text-purple-600"
+                ? " border-b-2 border-[#8734A3] text-[#8734A3]"
                 : "text-gray-600"
             }`}
           >

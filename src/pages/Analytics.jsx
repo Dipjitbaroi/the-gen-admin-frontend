@@ -26,7 +26,7 @@ const Analytics = () => {
   return (
     <div className="">
       {/* Header */}
-      <h1 className="text-4xl font-bold text-gray-800 mb-6">Analytics</h1>
+      <h1 className="text-4xl font-bold text-gray-800 h-12 mb-6">Analytics</h1>
 
       {/* Tabs */}
       <div className="flex space-x-4 mb-8 border border-gray-200 bg-white rounded-lg w-full shadow-md">
@@ -36,7 +36,7 @@ const Analytics = () => {
             onClick={() => setActiveTab(tab)}
             className={`flex px-6 py-4 text-sm font-medium w-full justify-center h-full ${
               activeTab === tab
-                ? "border-b-2 border-purple-600 text-purple-600 font-semibold"
+                ? "border-b-2 border-[#8734A3] text-[#8734A3] font-semibold"
                 : "text-gray-600"
             }`}
           >

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import HorizontalBarChart from "../charts/HorizontalBarChart";
 import LineChart from "../charts/LineChart";
 import {
@@ -14,10 +14,12 @@ import PaginationLayout from "../../layout/Pagination/pagination";
 import {
   useGetAgeGroupQuery,
   useGetGenderQuery,
+  useGetGeoDataQuery,
   useGetNumOfUsersQuery,
-  useGetRealTimeActiveUsersQuery,
-  // useGetGeographicDataQuery,
 } from "../../../services/apiConfig";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Loader from "../../layout/Loader/Loader";
 
 const UsersTab = () => {
   // Dropdown states
@@ -55,66 +57,69 @@ const UsersTab = () => {
     }
   };
 
-  const { data: apiChartData } = useGetNumOfUsersQuery(
-    createApiParams(numOfUsersValue)
-  );
-  const { data: apiAgeData, error } = useGetAgeGroupQuery(
-    createApiParams(ageGroupValue)
-  );
-  const { data: apiGenderData } = useGetGenderQuery(
-    createApiParams(genderValue)
-  );
+  const {
+    data: apiChartData,
+    isLoading: isChartLoading,
+    error: chartError,
+  } = useGetNumOfUsersQuery(createApiParams(numOfUsersValue));
+  const {
+    data: apiAgeData,
+    isLoading: isAgeLoading,
+    error: ageError,
+  } = useGetAgeGroupQuery(createApiParams(ageGroupValue));
+  const {
+    data: apiGenderData,
+    isLoading: isGenderLoading,
+    error: genderError,
+  } = useGetGenderQuery(createApiParams(genderValue));
 
   const handleChange = (setValue) => (event) => setValue(event.target.value);
   // Table pagination state
   const [page, setPage] = useState(1);
   const limit = 10;
 
-  console.log(numOfUsersValue);
-  console.log(ageGroupValue);
-  console.log(genderValue);
+  const {
+    data: geoData,
+    error: geoError,
+    isLoading: isGeoLoading,
+  } = useGetGeoDataQuery({ page, limit });
 
-  // API queries
-
-  console.log(apiChartData);
-  console.log(apiAgeData);
-  console.log(error);
-  console.log(apiGenderData);
-  // const {
-  //   data: geoData,
-  //   totalPages,
-  //   totalItems,
-  // } = useGetGeographicDataQuery({ page, limit });
+  useEffect(() => {
+    if (chartError) {
+      const errorMessage =
+        chartError.data?.message ||
+        "Failed to fetch user data. Please try again later.";
+      toast.error(errorMessage);
+    }
+    if (ageError) {
+      const errorMessage =
+        ageError.data?.message ||
+        "Failed to fetch age data. Please try again later.";
+      toast.error(errorMessage);
+    }
+    if (genderError) {
+      const errorMessage =
+        genderError.data?.message ||
+        "Failed to fetch gender data. Please try again later.";
+      toast.error(errorMessage);
+    }
+    if (geoError) {
+      const errorMessage =
+        geoError.data?.message ||
+        "Failed to fetch location data. Please try again later.";
+      toast.error(errorMessage);
+    }
+  }, [chartError, ageError, genderError, geoError]);
 
   const columns = [
-    { id: "country", label: "Country" },
+    { id: "location", label: "Country" },
     { id: "language", label: "Language" },
-    { id: "users", label: "Users" },
+    { id: "count", label: "Users" },
   ];
 
-  const rows = [
-    {
-      country: "001",
-      language: "Subscription",
-      users: "xdy",
-    },
-    {
-      country: "001",
-      language: "Subscription",
-      users: "xdy",
-    },
-    {
-      country: "001",
-      language: "Subscription",
-      users: "xdy",
-    },
-  ];
-
-  const geoData = rows;
-
-  // Common dropdown handler
   const handleChangePage = (newPage) => setPage(newPage);
 
+  // Transform Age Data for Charts
   const transformedAgeData = apiAgeData?.data
     ? {
         labels: apiAgeData.data.ageGroups.map((group) =>
@@ -123,17 +128,18 @@ const UsersTab = () => {
         datasets: [
           {
             label: "Current Month",
-            data: apiAgeData.data.ageGroups.map((group) => group.count),
-            backgroundColor: "#A855F7",
-            borderColor: "#A855F7",
+            data: apiAgeData.data.ageGroups.map((group) => group.count ?? 0),
+            backgroundColor: "#8734A3",
+            borderColor: "#8734A3",
             borderWidth: 1,
             borderRadius: 10,
             barPercentage: 0.9,
           },
         ],
       }
-    : { labels: [], datasets: [] }; // Default empty chart data
+    : { labels: [], datasets: [] };
 
+  // Transform Gender Data for Charts
   const transformedGenderData = apiGenderData?.data
     ? {
         labels: apiGenderData.data.genders.map((gender) =>
@@ -142,26 +148,26 @@ const UsersTab = () => {
         datasets: [
           {
             label: "Current Month",
-            data: apiGenderData.data.genders.map((gender) => gender.count),
-            backgroundColor: "#A855F7",
-            borderColor: "#A855F7",
+            data: apiGenderData.data.genders.map((gender) => gender.count ?? 0),
+            backgroundColor: "#8734A3",
+            borderColor: "#8734A3",
             borderWidth: 1,
             borderRadius: 10,
-            barPercentage: 0.9, // adjust the bar size within the available space
+            barPercentage: 0.9,
           },
         ],
       }
-    : { labels: [], datasets: [] }; // Default empty chart data
+    : { labels: [], datasets: [] };
 
-  const numberOfUsers = apiChartData ? apiChartData.data.numberOfUsers : {};
-
+  // Transform Users Chart Data
+  const numberOfUsers = apiChartData?.data?.numberOfUsers || {};
   const labels = Object.keys(numberOfUsers).map((date) =>
     new Date(date).toLocaleDateString("en-US", {
       month: "numeric",
       day: "numeric",
     })
   );
-  const userData = Object.values(numberOfUsers);
+  const userData = Object.values(numberOfUsers).map((val) => val ?? 0);
 
   const chartData = {
     labels,
@@ -169,12 +175,13 @@ const UsersTab = () => {
       {
         label: "Users",
         data: userData,
-        borderColor: "#A855F7",
-        pointBackgroundColor: "#A855F7",
-        tension: 0,
+        borderColor: "#8734A3",
+        pointBackgroundColor: "#8734A3",
+        tension: 0.15,
       },
     ],
   };
+
   const chartOptions = {
     responsive: true,
     plugins: {
@@ -182,106 +189,114 @@ const UsersTab = () => {
     },
     scales: {
       x: { grid: { display: "#E5E7EB" } },
-      y: { grid: { color: "#E5E7EB" }, ticks: { stepSize: 200000 } },
+      y: { grid: { color: "#E5E7EB" } },
     },
     maintainAspectRatio: false,
   };
 
-  // const chartData = {
-  //   labels: ["2/1", "2/5", "2/10", "2/15", "2/20", "2/25", "2/28"],
-  //   datasets: [
-  //     {
-  //       label: "Users",
-  //       data: [50000, 100000, 200000, 300000, 400000, 600000, 786274],
-  //       borderColor: "#A855F7",
-  //       pointBackgroundColor: "#A855F7",
-  //       tension: 0,
-  //     },
-  //   ],
-  // };
-
-  // const barchartData = {
-  //   labels: ["null", "male", "female", "trans", "non-binary"],
-  //   datasets: [
-  //     {
-  //       label: "Current Month",
-  //       data: [40, 80, 100, 60, 110],
-  //       backgroundColor: "#A855F7",
-  //       borderColor: "#A855F7",
-  //       borderWidth: 1,
-  //       borderRadius: 10,
-  //       barPercentage: 0.9, // adjust the bar size within the available space
-  //     },
-  //   ],
-  // };
-
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-      <div className="lg:col-span-2">
-        <LineChart
-          title="Active Users Over Time"
-          chartData={chartData} // Process API data here
-          chartOptions={chartOptions}
-          value={numOfUsersValue}
-          handleChange={handleChange(setNumOfUsersValue)}
-        />
-      </div>
-      <div className="col-span-1">
-        <HorizontalBarChart
-          title="Age Group"
-          chartData={transformedAgeData} // Process API data here
-          value={ageGroupValue}
-          handleChange={handleChange(setAgeGroupValue)}
-        />
-      </div>
-      <div className="col-span-1">
-        <HorizontalBarChart
-          title="Gender"
-          chartData={transformedGenderData} // Process API data here
-          value={genderValue}
-          handleChange={handleChange(setGenderValue)}
-        />
-      </div>
-      {/* <div className="col-span-2">
-        <TableContainer
-          component={Paper}
-          className="bg-white border rounded-md shadow p-4"
-        >
-          <h1 className="text-2xl font-semibold border-b pb-4">
-            Geographic Locations
-          </h1>
-          <Table>
-            <TableHead>
-              <TableRow>
-                {columns.map((col) => (
-                  <TableCell key={col.id} className="font-semibold">
-                    {col.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {geoData?.data.map((row, index) => (
-                <TableRow key={index}>
-                  {columns.map((col) => (
-                    <TableCell key={col.id}>{row[col.id]}</TableCell>
-                  ))}
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <div className="mt-4">
-            <PaginationLayout
-              totalPages={totalPages}
-              page={page}
-              onChangePage={handleChangePage}
-              totalItems={totalItems}
-              itemsPerPage={limit}
+    <>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="lg:col-span-2">
+          {isChartLoading ? (
+            <Loader />
+          ) : chartError ? (
+            <p>Error loading user data</p>
+          ) : (
+            <LineChart
+              title="Active Users Over Time"
+              chartData={chartData}
+              chartOptions={chartOptions}
+              value={numOfUsersValue}
+              handleChange={handleChange(setNumOfUsersValue)}
             />
-          </div>
-        </TableContainer>
-      </div> */}
-    </div>
+          )}
+        </div>
+
+        <div className="col-span-1">
+          {isAgeLoading ? (
+            <Loader />
+          ) : ageError ? (
+            <p>Error loading age data</p>
+          ) : (
+            <HorizontalBarChart
+              title="Age Group"
+              chartData={transformedAgeData}
+              value={ageGroupValue}
+              handleChange={handleChange(setAgeGroupValue)}
+            />
+          )}
+        </div>
+
+        <div className="col-span-1">
+          {isGenderLoading ? (
+            <Loader />
+          ) : genderError ? (
+            <p>Error loading gender data</p>
+          ) : (
+            <HorizontalBarChart
+              title="Gender"
+              chartData={transformedGenderData}
+              value={genderValue}
+              handleChange={handleChange(setGenderValue)}
+            />
+          )}
+        </div>
+
+        <div className="col-span-2">
+          <TableContainer
+            component={Paper}
+            className="bg-white border rounded-md shadow p-4"
+          >
+            <h1 className="text-2xl font-semibold border-b pb-4">
+              Geographic Locations
+            </h1>
+
+            {isGeoLoading ? (
+              <Loader />
+            ) : geoError ? (
+              <p>Error loading location data</p>
+            ) : (
+              <>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      {columns.map((col) => (
+                        <TableCell key={col.id} className="font-semibold">
+                          {col.label}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {geoData?.data.map((row, index) => (
+                      <TableRow key={index}>
+                        {columns.map((col) => (
+                          <TableCell key={col.id}>
+                            {row[col.id] ?? "null"}
+                          </TableCell>
+                        ))}
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+                <div className="mt-4">
+                  <PaginationLayout
+                    totalPages={geoData?.pagination?.totalPages || 1}
+                    page={page}
+                    onChangePage={handleChangePage}
+                    totalItems={geoData?.pagination?.total || 0}
+                    itemsPerPage={limit}
+                    type={"locations"}
+                  />
+                </div>
+              </>
+            )}
+          </TableContainer>
+        </div>
+      </div>
+      <ToastContainer />
+    </>
   );
 };
 

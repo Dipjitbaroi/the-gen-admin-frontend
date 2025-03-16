@@ -1,0 +1,52 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: configure .env
+        run: |
+          echo "VITE_API_URL=${{ vars.VITE_API_URL }}" > .env
+          echo "VITE_MODE=production" >> .env
+          cat .env
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Build project
+        run: yarn build
+
+      - name: Copy to Temp Location
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          source: "dist/*"
+          target: "/tmp/deploy-html"
+          rm: true
+
+      - name: Atomic Deployment
+        uses: appleboy/ssh-action@v1.2.1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            sudo find /var/www/html -mindepth 1 -delete
+            sudo mv /tmp/deploy-html/dist/* /var/www/html/
+            sudo chown -R www-data:www-data /var/www/html
+            sudo nginx -s reload

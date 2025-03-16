@@ -14,7 +14,7 @@ const DropdownComponent = ({ value, handleChange }) => {
           display: "flex",
           alignItems: "center",
           "& .MuiSelect-icon": {
-            color: "#8B5CF6", // TailwindCSS class for text-purple-500
+            color: "#8734A3", // TailwindCSS class for text-purple-500
           },
         }}
       >

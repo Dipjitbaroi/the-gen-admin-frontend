@@ -1,0 +1,29 @@
+{
+  "currencies": {
+    "MAIN": {
+      "symbol": "$",
+      "format": "{symbol}{amount}",
+      "decimal_places": 2
+    },
+    "USD": {
+      "symbol": "$",
+      "format": "{symbol}{amount}",
+      "decimal_places": 2
+    },
+    "EUR": {
+      "symbol": "€",
+      "format": "{amount}{symbol}",
+      "decimal_places": 2
+    },
+    "JPY": {
+      "symbol": "¥",
+      "format": "{symbol}{amount}",
+      "decimal_places": 0
+    },
+    "BDT": {
+      "symbol": "৳",
+      "format": "{symbol}{amount}",
+      "decimal_places": 2
+    }
+  }
+}

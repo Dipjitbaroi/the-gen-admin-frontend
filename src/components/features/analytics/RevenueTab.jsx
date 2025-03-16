@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import LineChart from "../charts/LineChart";
 import {
   useGetProSubEarningsQuery,
   useGetRevenueQuery,
   useGetUnlimitedSubEarningsQuery,
 } from "../../../services/apiConfig";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import Loader from "../../layout/Loader/Loader";
 
 const RevenueTab = () => {
-  const [revenueValue, setrevenueValue] = useState("thisMonth");
+  let revenueValue;
   const [unlimitedSubEarningsValue, setunlimitedSubEarningsValue] =
     useState("thisMonth");
   const [proSubEarningsValue, setproSubEarningsValue] = useState("thisMonth");
@@ -42,9 +45,7 @@ const RevenueTab = () => {
     }
   };
 
-  const revenueApiParams = createApiParams(
-    revenueValue
-  );
+  const revenueApiParams = createApiParams(revenueValue);
   const unlimitedSubEarningsApiParams = createApiParams(
     unlimitedSubEarningsValue
   );
@@ -66,25 +67,30 @@ const RevenueTab = () => {
     isLoading: realTimeActiveUsersLoading,
   } = useGetProSubEarningsQuery(proSubEarningsApiParams);
 
+  useEffect(() => {
+    if (numOfUsersError) {
+      const errorMessage =
+        numOfUsersError.data?.message ||
+        "Failed to fetch revenue data. Please try again later.";
+      toast.error(errorMessage);
+    }
+    if (realTimeMixerUsersError) {
+      const errorMessage =
+        realTimeMixerUsersError.data?.message ||
+        "Failed to fetch unlimited sub. earnings data. Please try again later.";
+      toast.error(errorMessage);
+    }
+    if (realTimeActiveUsersError) {
+      const errorMessage =
+        realTimeActiveUsersError.data?.message ||
+        "Failed to fetch pro sub. earnings data. Please try again later.";
+      toast.error(errorMessage);
+    }
+  }, [numOfUsersError, realTimeMixerUsersError, realTimeActiveUsersError]);
+
   const handleChange = (setValue) => (event) => {
     setValue(event.target.value);
   };
-
-  // const chartDynamicData = (labels, data) => {
-  //   const dataSet = {
-  //     labels: labels,
-  //     datasets: [
-  //       {
-  //         label: "Users",
-  //         data: data,
-  //         borderColor: "#A855F7",
-  //         pointBackgroundColor: "#A855F7",
-  //         tension: 0,
-  //       },
-  //     ],
-  //   };
-  //   return dataSet;
-  // };
 
   const transformRevenueData = (apiData) => {
     const dayWiseRevenue = apiData.dayWiseRevenue;
@@ -103,9 +109,9 @@ const RevenueTab = () => {
         {
           label: "Revenue",
           data,
-          borderColor: "#A855F7",
-          pointBackgroundColor: "#A855F7",
-          tension: 0.4,
+          borderColor: "#8734A3",
+          pointBackgroundColor: "#8734A3",
+          tension: 0.15,
         },
       ],
     };
@@ -114,31 +120,10 @@ const RevenueTab = () => {
   if (
     numOfUsersLoading ||
     realTimeMixerUsersLoading ||
-    realTimeActiveUsersLoading 
+    realTimeActiveUsersLoading
   ) {
-    return <p>Loading...</p>;
+    return <Loader />;
   }
-
-  if (
-    numOfUsersError ||
-    realTimeMixerUsersError ||
-    realTimeActiveUsersError
-  ) {
-    return <p>Error: Unable to fetch data</p>;
-  }
-
-  // const chartData = {
-  //   labels: ["2/1", "2/5", "2/10", "2/15", "2/20", "2/25", "2/28"],
-  //   datasets: [
-  //     {
-  //       label: "Active Users",
-  //       data: [1000, 3000, 5000, 7000, 10000, 15000, 20000],
-  //       borderColor: "#A855F7",
-  //       pointBackgroundColor: "#A855F7",
-  //       tension: 0.4,
-  //     },
-  //   ],
-  // };
 
   const chartOptions = {
     responsive: true,
@@ -154,11 +139,6 @@ const RevenueTab = () => {
     maintainAspectRatio: false, // Ensure the chart maintains aspect ratio
   };
 
-  // const value = "thisMonth"; // Example value
-  // const handleChange = (event) => {
-  //   console.log(event.target.value);
-  // }; // Example handler function
-
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div className="lg:col-span-2 ">
@@ -168,9 +148,10 @@ const RevenueTab = () => {
           chartData={transformRevenueData(RevenueData)}
           chartOptions={chartOptions}
           value={revenueValue}
-          handleChange={handleChange}
+          handleChange={""}
           className={"h-fit"}
           chartClass={"h-[200px]"}
+          hideDropDown={true}
           key={1}
         />
       </div>
@@ -190,6 +171,7 @@ const RevenueTab = () => {
         handleChange={handleChange(setproSubEarningsValue)}
         chartClass={"h-[200px]"}
       />
+      <ToastContainer />
     </div>
   );
 };

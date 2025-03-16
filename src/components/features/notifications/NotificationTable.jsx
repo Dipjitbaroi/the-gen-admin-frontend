@@ -42,7 +42,7 @@ const AllNotificationTable = () => {
 
   return (
     <div>
-    <GeneralTable columns={columns} data={rows} clickableRows={false} navLink={"/dashboard"} />
+    <GeneralTable columns={columns} data={rows} clickableRows={true} openModal={true} modalName={"NotificationModal"} />
     </div>
   );
 };

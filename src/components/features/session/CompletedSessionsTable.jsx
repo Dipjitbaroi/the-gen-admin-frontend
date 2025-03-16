@@ -34,7 +34,7 @@ const CompletedSessionsTable = () => {
 
   return (
     <div>
-      <GeneralTable columns={columns} data={rows} clickableRows={true} navLink={"/dashboard"} />
+      <GeneralTable columns={columns} data={rows} />
       {/* Modal */}
       <SessionModal open={openModal} onClose={() => setOpenModal(false)} />
     </div>

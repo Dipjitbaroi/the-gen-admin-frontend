@@ -40,8 +40,6 @@ const AllSessionsTable = () => {
       <GeneralTable
         columns={columns}
         data={resData}
-        clickableRows={true}
-        navLink={"/dashboard"}
       />
       {/* Modal */}
       <SessionModal open={openModal} onClose={() => setOpenModal(false)} />

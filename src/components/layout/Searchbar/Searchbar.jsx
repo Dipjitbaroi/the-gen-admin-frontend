@@ -1,10 +1,12 @@
-import React from 'react';
-import { TextField, InputAdornment, IconButton } from '@mui/material';
-import { Search as SearchIcon, Tune as TuneIcon, List as ListIcon } from '@mui/icons-material';
+import React from "react";
+import { TextField, InputAdornment, IconButton } from "@mui/material";
+import { Search as SearchIcon } from "@mui/icons-material";
+import filter from "../../../assets/filter.png";
+import addCol from "../../../assets/add-col.png";
 
 const SearchBar = () => {
   return (
-    <div className="flex items-center rounded-xl border border-gray-300 p-2 bg-white h-full">
+    <div className="flex items-center rounded-xl border border-gray-300 p-2 bg-white h-14">
       <TextField
         placeholder="Search"
         variant="standard"
@@ -12,19 +14,13 @@ const SearchBar = () => {
           disableUnderline: true,
           startAdornment: (
             <InputAdornment position="start">
-              <SearchIcon color="black"/>
+              <SearchIcon color="black" />
             </InputAdornment>
           ),
         }}
         fullWidth
         className="flex-1"
       />
-      <IconButton className="p-2">
-        <TuneIcon />
-      </IconButton>
-      <IconButton className="p-2">
-        <ListIcon />
-      </IconButton>
     </div>
   );
 };

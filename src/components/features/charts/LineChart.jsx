@@ -1,7 +1,7 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
 import Upward from "../../../assets/upward.png";
-import Downward from "../../../assets/downward.png"; // Make sure to include the correct path
+import Downward from "../../../assets/downward.png"; // Ensure the correct path
 import DropdownComponent from "../../layout/Dropdown/dropdown";
 
 const LineChart = ({
@@ -12,10 +12,10 @@ const LineChart = ({
   title,
   className,
   chartClass,
+  hideDropDown = false, // Default to false
 }) => {
   const dataPoints = chartData?.datasets?.[0]?.data || [];
   const lastDataPoint = dataPoints.slice(-1)[0] || 0;
-  console.log(lastDataPoint)
   const secondLastDataPoint = dataPoints.slice(-2, -1)[0] || 0;
   const isUpwardTrend = lastDataPoint >= secondLastDataPoint;
   const formattedLastDataPoint = lastDataPoint.toLocaleString();
@@ -39,9 +39,11 @@ const LineChart = ({
             alt={isUpwardTrend ? "Upward" : "Downward"}
           />
         </div>
-        <DropdownComponent value={value} handleChange={handleChange} />
+        {!hideDropDown && (
+          <DropdownComponent value={value} handleChange={handleChange} />
+        )}
       </div>
-      <div className={`${chartClass}`}>
+      <div className={chartClass}>
         <Line data={chartData} options={chartOptions} />
       </div>
     </div>

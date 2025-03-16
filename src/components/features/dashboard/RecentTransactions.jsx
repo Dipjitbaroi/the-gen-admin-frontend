@@ -8,8 +8,13 @@ import {
   TableRow,
   Paper,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const RecentTransactions = ({ columns, data }) => {
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/transactions");
+  };
   return (
     <TableContainer component={Paper} className="shadow-lg p-4">
       <h1 className="text-2xl font-semibold border-b pb-4">Recent Transactions</h1>
@@ -33,7 +38,7 @@ const RecentTransactions = ({ columns, data }) => {
           ))}
         </TableBody>
       </Table>
-      <button className="bg-white border-2 border-[#8734A3] text-[#8734A3] py-2 px-4 rounded-lg w-full mt-4 font-semibold">
+      <button className="bg-white hover:bg-gray-100 border-2 border-[#8734A3] text-[#8734A3] py-2 px-4 rounded-lg w-full mt-4 font-semibold" onClick={handleClick}>
         View All
       </button>
     </TableContainer>
